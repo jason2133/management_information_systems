@@ -2,6 +2,7 @@
 - Korea Univ. / Management Information Systems / BUSS215 / 2022 Spring
 - Lecture by Prof. Gunwoong Lee, Korea University Business School
 
+### Schedule
 |Lecture|Contents|
 |:------:|:-----:|
 |0|Course Introduction|
