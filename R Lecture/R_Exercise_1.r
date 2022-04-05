@@ -108,4 +108,9 @@ objects()              # Now your memory space is empty!
 log(10)                # This is a function that caluate the logarithm value of 10
 help(log)              # Use the help function to get the usage of a function
 log(4, base=2)
-example(log)           # Display examples of a function            
+example(log)           # Display examples of a function   
+
+
+
+
+
