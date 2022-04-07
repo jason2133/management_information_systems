@@ -32,3 +32,4 @@ Sales
 
 # Step 3
 Sales[Sales$Final_Price < mean(Sales$Final_Price), 2]
+
