@@ -18,13 +18,13 @@ Input <- data.frame(C, D); Input
 # install.packages('dplyr')
 
 library(dplyr)
-Input <- Input %>% mutate(OR = ifelse(C==1 | D==1, 1, 0))
-Input <- Input %>% mutate(AND = ifelse(C==1 & D==1, 1, 0))
-Input <- Input %>% mutate(XOR = ifelse((C==1 & D==0) | (C==0 & D==1), 1, 0))
-Input
+Output <- Input %>% mutate(OR = ifelse(C==1 | D==1, 1, 0))
+Output <- Output %>% mutate(AND = ifelse(C==1 & D==1, 1, 0))
+Output <- Output %>% mutate(XOR = ifelse((C==1 & D==0) | (C==0 & D==1), 1, 0))
+Output
      
 # Step 3
-Result <- Input
+Result <- Output
 Result
 
 ## Task 3 ##
@@ -53,10 +53,10 @@ FN <- function(A, B) {
   else if ((A < 0 & (A%%2 != 0)) | (B < 0 & (B%%2 != 0))) {
     A - B
   }
-  else if ((A < 0 & (A%%2 == 0)) & (B < 0 & (B%%2 ==0))) {
+  else if ((A < 0 & (A%%2 == 0)) & (B < 0 & (B%%2 == 0))) {
     A * B
   }
-  else if ((A > 0 & (A%%2 == 0)) | (B > 0 & (B%%2 ==0))) {
+  else if ((A > 0 & (A%%2 == 0)) | (B > 0 & (B%%2 == 0))) {
     A / B
   }
   else {
