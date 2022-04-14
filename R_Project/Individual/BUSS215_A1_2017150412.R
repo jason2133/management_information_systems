@@ -25,25 +25,43 @@ admission <- read.csv('C:/Users/jason/¹ÙÅÁ È­¸é/coding1/management_information_s
 
 Summary <- function(x, y) {
   Num = nrow(x[y])
-  Mean = mean(x[y])
-  SD = sd(x[y])
-  Min = min(x[y])
-  Max = max(x[y])
-  
-  
-}
-
-Summary(admission, 1)
-
-
-
-SUMMARY <- function(x) {
-  mean = mean(x)
-  sd = sd(x)
-  result = c(mean, sd)
+  Mean = mean(x[,y])
+  SD = sd(x[,y])
+  Min = min(x[,y])
+  Max = max(x[,y])
+  result = c(Num=Num, Mean=Mean, SD=SD, Min=Min, Max=Max)
   result
 }
 
-SUMMARY(Input2$X3)
+Summary(admission, 1)
+Summary(admission, 2)
+Summary(admission, 3)
+Summary(admission, 4)
 
 ## Task 4 ##
+FN <- function(A, B) {
+  if (A > 0 & B > 0 & (A%%2 != 0) & (B%%2 != 0)){
+    A + B
+  }
+  else if ((A < 0 & (A%%2 != 0)) | (B < 0 & (B%%2 != 0))) {
+    A - B
+  }
+  else if ((A < 0 & (A%%2 == 0)) & (B < 0 & (B%%2 ==0))) {
+    A * B
+  }
+  else if ((A > 0 & (A%%2 == 0)) | (B > 0 & (B%%2 ==0))) {
+    A / B
+  }
+  else {
+    A^B
+  }
+}
+
+FN(2, 2)
+FN(2, 1)
+FN(1, 2)
+FN(1, 1)
+FN(-2, -2)
+FN(-2, -1)
+FN(-1, -2)
+FN(-1, -1)
