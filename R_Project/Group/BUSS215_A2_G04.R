@@ -78,8 +78,8 @@ b6 <- adm[adm$GRE_Rank=='NQ',]; b6; nrow(b6)
 Q6 <- nrow(a6) / nrow(b6); Q6
 
 # Q7
-a7 <- adm[(adm$admit==1) & (adm$GRE_Rank!='High'), ]; a7; nrow(a7)
-b7 <- adm[adm$GRE_Rank!='High',]; b7; nrow(b7)
+a7 <- adm[(adm$admit==1) & (adm$GPA_Rank!='High'), ]; a7; nrow(a7)
+b7 <- adm[adm$GPA_Rank!='High',]; b7; nrow(b7)
 Q7 <- nrow(a7) / nrow(b7); Q7
 
 # Q8
