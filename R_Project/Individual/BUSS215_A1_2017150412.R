@@ -2,8 +2,7 @@ rm(list=ls())
 
 ## Task 1 ##
 A = seq(1, 5, by=1)^seq(2, 10, by=2) * 4^seq(10, 2, by=(-2)); A
-B = sum(seq(2, 10, by=1)^2 + 2^(seq(2, 10, by=1))) + sum(seq(1, 20, b=1)^2 / (2 + seq(2, 15, by=1))); B
-# Checking the B
+B = sum(seq(2, 10, by=1)^2 + 2^(seq(2, 10, by=1))) + sum(sum(seq(1, 20, b=1)^2) / (2 + seq(2, 15, by=1))); B
 
 ## Task 2 ##
 # Step 1
@@ -13,12 +12,13 @@ Input <- data.frame(C, D); Input
 
 # Step 2
 # I have used the R package 'dplyr' to solve the Step 2 and Step 3.
-# If you want to use the R package 'dplyr', you can remove the comment below and install the package.
+# If you want to use the R package 'dplyr', you can uncomment the comment below and install the package.
 # After you install the package, you can activate the code below.
 
 # install.packages('dplyr')
 
 library(dplyr)
+
 Output <- Input %>% mutate(OR = ifelse(C==1 | D==1, 1, 0))
 Output <- Output %>% mutate(AND = ifelse(C==1 & D==1, 1, 0))
 Output <- Output %>% mutate(XOR = ifelse((C==1 & D==0) | (C==0 & D==1), 1, 0))
@@ -37,7 +37,7 @@ Summary <- function(x, y) {
   SD = sd(x[,y])
   Min = min(x[,y])
   Max = max(x[,y])
-  result = c(Num=Num, Mean=Mean, SD=SD, Min=Min, Max=Max)
+  result = data.frame(Num=Num, Mean=Mean, SD=SD, Min=Min, Max=Max)
   result
 }
 
