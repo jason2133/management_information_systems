@@ -1,101 +1,63 @@
-rm(list=ls())
-
 ## Step 0 ##
 adm<-read.csv('admission.csv')
-head(adm)
 
 ## Step 1 ##
-# We have used the R package 'dplyr' to solve the Step 1.
-# If you want to use the R package 'dplyr', you can remove the comment below and install the package.
-# After you install the package, you can activate the code below.
-
-# install.packages('dplyr')
-
-library(dplyr)
-
-adm <- adm %>% mutate(GRE_Rank = 
-                           case_when(gre <= 300 ~ 'NQ',
-                                     300 < gre & gre <= 550 ~ 'Low',
-                                     550 < gre & gre <= 700 ~ 'Mid',
-                                     700 < gre & gre <= 800 ~ 'High'))
-adm <- adm %>% mutate(GPA_Rank = 
-                           case_when(gpa <= 2.0 ~ 'NQ',
-                                     2.0 < gpa & gpa <= 3.0 ~ 'Low',
-                                     3.0 < gpa & gpa <= 3.5 ~ 'Mid',
-                                     3.5 < gpa & gpa <= 4.0 ~ 'High'))
-
-adm <- adm %>% mutate(SCH_Rank = 
-                        case_when(rank==4 ~ 'NQ',
-                                  rank==3 ~ 'Low',
-                                  rank==2 ~ 'Mid',
-                                  rank==1 ~ 'High'))
-
+gre_rank<-ifelse(adm$gre<=300,"NQ",ifelse(adm$gre>550,ifelse(adm$gre>700,"High","Mid"),"Low"))
+gpa_rank<-ifelse(adm$gpa<=2.0,"NQ",ifelse(adm$gpa>3.0,ifelse(adm$gpa>3.5,"High","Mid"),"Low"))
+sch_rank<-ifelse(adm$rank==4,"NQ",ifelse(adm$rank==3,"Low",ifelse(adm$rank==2,"Mid","High")))             
+adm<-cbind(adm, data.frame(GRE_Rank=gre_rank,GPA_Rank=gpa_rank,SCH_Rank=sch_rank))
 head(adm)
 
 ## Step 2 ##
 # Q1
-Q1 <- nrow(subset(adm, GPA_Rank=='Mid')); Q1
-
+Q1 <- nrow(adm[adm$GPA_Rank=="Mid", ]); Q1
 # Q2
-Q2 <- nrow(subset(adm, SCH_Rank=='Low')); Q2
-
+Q2 <- nrow(adm[adm$SCH_Rank=="Low", ]); Q2
 # Q3
-Q3 <- mean(adm[adm$SCH_Rank!='NQ',]$gre); Q3
+Q3 <- mean(adm[adm$SCH_Rank!="NQ", "gre"]); Q3
 
 ## Step 3 ##
-adm <- adm %>% mutate(GRE_Rank_num = 
-                        case_when(GRE_Rank == 'NQ' ~ 10,
-                                  GRE_Rank == 'Low' ~ 40,
-                                  GRE_Rank == 'Mid' ~ 70,
-                                  GRE_Rank == 'High' ~ 100))
-
-adm <- adm %>% mutate(GPA_Rank_num = 
-                        case_when(GPA_Rank == 'NQ' ~ 10,
-                                  GPA_Rank == 'Low' ~ 40,
-                                  GPA_Rank == 'Mid' ~ 70,
-                                  GPA_Rank == 'High' ~ 100))
-
-adm <- adm %>% mutate(SCH_Rank_num = 
-                        case_when(SCH_Rank == 'NQ' ~ 10,
-                                  SCH_Rank == 'Low' ~ 40,
-                                  SCH_Rank == 'Mid' ~ 70,
-                                  SCH_Rank == 'High' ~ 100))
-
-adm <- adm %>% mutate(Overall_Score = 0.5*GRE_Rank_num + 0.3*GPA_Rank_num + 0.2*SCH_Rank_num)
-adm <- adm[-c(8, 9, 10)]
+gre_r<-ifelse(adm$GRE_Rank=="NQ", 10, ifelse(adm$GRE_Rank=="Low", 40, ifelse(adm$GRE_Rank=="Mid",70,100)))
+gpa_r<-ifelse(adm$GPA_Rank=="NQ", 10, ifelse(adm$GPA_Rank=="Low", 40, ifelse(adm$GPA_Rank=="Mid",70,100)))
+sch_r<-ifelse(adm$SCH_Rank=="NQ", 10, ifelse(adm$SCH_Rank=="Low", 40, ifelse(adm$SCH_Rank=="Mid",70,100)))
+overall_score<-gre_r*0.5+gpa_r*0.3+sch_r*0.2
+adm<-cbind(adm, data.frame(Overall_Score=overall_score))
 head(adm)
 
 ## Step 4 ##
-# Q4
-Q4 <- mean(adm$admit==0); Q4
+# Q4  
+numerator1<-nrow(adm[adm$admit==0, ])
+denominator1<-nrow(adm)
+Q4 <- numerator1/denominator1; Q4
 
 # Q5
-Q5 <- mean(adm$admit==1); Q5
+Q5 <- 1-(numerator1/denominator1); Q5
 
 # Q6
-a6 <- adm[(adm$admit==0) & (adm$GRE_Rank=='NQ'), ]
-b6 <- adm[adm$GRE_Rank=='NQ',]
-Q6 <- nrow(a6) / nrow(b6); Q6
+numerator2<-nrow(adm[adm$admit==0 & adm$GRE_Rank=="NQ", ])
+denominator2<-nrow(adm[adm$GRE_Rank=="NQ", ])
+Q6 <- numerator2/denominator2; Q6
 
 # Q7
-a7 <- adm[(adm$admit==1) & (adm$GPA_Rank!='High'), ]
-b7 <- adm[adm$GPA_Rank!='High',]
-Q7 <- nrow(a7) / nrow(b7); Q7
+numerator3<-nrow(adm[adm$admit==1 & adm$GPA_Rank!="High", ])
+denominator3<-nrow(adm[adm$GPA_Rank!="High", ])
+Q7 <- numerator3/denominator3; Q7
 
 # Q8
-a8 <- adm[(adm$admit==0) & (adm$SCH_Rank=='Low'), ]
-b8 <- adm[adm$SCH_Rank=='Low',]
-Q8 <- nrow(a8) / nrow(b8); Q8
+numerator4<-nrow(adm[adm$admit==0 & adm$SCH_Rank=="Low", ])
+denominator4<-nrow(adm[adm$SCH_Rank=="Low", ])
+Q8 <- numerator4/denominator4; Q8
 
 # Q9
-a9 <- adm[(adm$admit==1) & (adm$Overall_Score>75), ]
-b9 <- adm[adm$Overall_Score>75,]
-Q9 <- nrow(a9) / nrow(b9); Q9
+numerator5<-nrow(adm[adm$admit==1 & adm$Overall_Score>75, ])
+denominator5<-nrow(adm[adm$Overall_Score>75, ])
+Q9 <- numerator5/denominator5; Q9
 
 # Q10
-a10 <- adm[(adm$admit==0) & (adm$Overall_Score<30), ]
-b10 <- adm[adm$Overall_Score<30,]
-Q10 <- nrow(a10) / nrow(b10); Q10
+numerator6<-nrow(adm[adm$admit==0 & adm$Overall_Score<30, ])
+denominator6<-nrow(adm[adm$Overall_Score<30, ])
+Q10 <- numerator6/denominator6; Q10
 
 ## Step 5 ##
-write.csv(adm, file='BUSS215_A2_G04.csv')
+write.csv(adm, file="BUSS215_A2_G04.csv")
+
